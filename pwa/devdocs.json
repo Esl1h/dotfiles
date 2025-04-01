@@ -1,0 +1,6 @@
+{
+  "docs": "ansible/apache_http_server/bash/chef~18/docker/git/go/jq/kubectl/kubernetes/latex/man/mariadb/markdown/nginx/perl~5.38/python~3.13/redis/ruby~3.4/rails~8.0/rust/saltstack/sqlite/terraform/dom",
+  "noAutofocus": "1",
+  "autoInstall": "1",
+  "theme": "dark"
+}
