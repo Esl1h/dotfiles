@@ -70,7 +70,6 @@ export MANPAGER="/usr/bin/most -s"
 # export XMODIFIERS=@im=ibus
 # export QT_IM_MODULE=ibus
 
-export ZSH="/home/esli/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
