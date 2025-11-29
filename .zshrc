@@ -39,10 +39,11 @@ plugins=(
     terraform
     vscode
     git-extras
-    # docker
+    docker
     zsh-syntax-highlighting
     zsh-autosuggestions
     bgnotify
+    kubectl
 )
 
 # Install Ruby Gems to ~/gems
@@ -69,7 +70,11 @@ export MANPAGER="/usr/bin/most -s"
 # export XMODIFIERS=@im=ibus
 # export QT_IM_MODULE=ibus
 
+export ZSH="/home/esli/.oh-my-zsh"
+source $ZSH/oh-my-zsh.sh
 
-# source <(kubectl completion zsh)
-# alias k=kubectl
-# complete -F __start_kubectl k
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+source <(kubectl completion zsh)
+. "$HOME/.cargo/env"
