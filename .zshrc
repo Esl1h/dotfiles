@@ -77,3 +77,7 @@ source $ZSH/oh-my-zsh.sh
 
 source <(kubectl completion zsh)
 . "$HOME/.cargo/env"
+
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh)"
