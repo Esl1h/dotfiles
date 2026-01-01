@@ -1,55 +1,122 @@
+# =============================================================================
+# ~/.gitignore - Global Git Ignore
+# =============================================================================
 
-### DotfilesSh ###
-local-patch
-patched-src
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
 
-### Linux ###
+# Editor files
 *~
+*.swp
+*.swo
+*.swn
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.tmproj
+*.esproj
+nbproject/
 
-# temporary files which can be created if a process still has a handle open of a deleted file
-.fuse_hidden*
+# Vim
+Session.vim
+.netrwhist
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+tags
 
-# KDE directory preferences
-.directory
+# JetBrains
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
 
-# Linux trash folder which might appear on any partition or disk
-.Trash-*
+# Logs and databases
+*.log
+*.sql
+*.sqlite
 
-# .nfs files are created when an open file is removed but is still being accessed
-.nfs*
+# Compiled source
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.pyc
+*.pyo
+__pycache__/
 
-### Zsh ###
-# Zsh compiled script + zrecompile backup
-*.zwc
-*.zwc.old
+# Packages
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
 
-# Zsh completion-optimization dumpfile
-*zcompdump*
+# Environment files
+.env
+.env.local
+.env.*.local
+*.local
 
-# Zsh history
-.zsh_history
+# Python
+venv/
+.venv/
+ENV/
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Zsh sessions
-.zsh_sessions
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Zsh zcalc history
-.zcalc_history
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
 
-# A popular plugin manager's files
-._zinit
-.zinit_lstupd
+# Ansible
+*.retry
 
-# zdharma/zshelldoc tool's files
-zsdoc/data
+# Temp files
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
 
-# robbyrussell/oh-my-zsh/plugins/per-directory-history plugin's files
-# (when set-up to store the history in the local directory)
-.directory_history
-
-# MichaelAquilina/zsh-autoswitch-virtualenv plugin's files
-# (for Zsh plugins using Python)
-.venv
-
-# Zunit tests' output
-/tests/_output/*
-!/tests/_output/.gitkeep
+# SSH keys (just in case)
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+*.pem

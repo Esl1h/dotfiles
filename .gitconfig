@@ -1,0 +1,385 @@
+# =============================================================================
+# ~/.gitconfig - The Ultimate Git Configuration
+# Esli Silva - SRE/DevOps Engineer
+# Last updated: 2026-01
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Identity & Security
+# -----------------------------------------------------------------------------
+[user]
+    name = ****
+    email = ****
+    signingkey = ****
+
+[gpg]
+    program = gpg
+
+[commit]
+    gpgSign = true
+    verbose = true
+
+[tag]
+    gpgSign = true
+    sort = version:refname
+
+# -----------------------------------------------------------------------------
+# Core Settings
+# -----------------------------------------------------------------------------
+[core]
+    editor = vim
+    pager = less -FRX
+    excludesfile = ~/.gitignore
+    autocrlf = input
+    whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+    # Repos grandes: descomente para performance
+    # fsmonitor = true
+    # untrackedCache = true
+
+[init]
+    defaultBranch = main
+
+[help]
+    autocorrect = prompt
+
+# -----------------------------------------------------------------------------
+# Credential Management
+# -----------------------------------------------------------------------------
+[credential]
+    helper = cache --timeout=7200
+    # Para libsecret (Fedora/Arch com GNOME Keyring):
+    # helper = /usr/libexec/git-core/git-credential-libsecret
+
+# -----------------------------------------------------------------------------
+# Diff & Merge
+# -----------------------------------------------------------------------------
+[diff]
+    algorithm = histogram
+    colorMoved = default
+    colorMovedWS = allow-indentation-change
+    mnemonicPrefix = true
+    renames = true
+    submodule = log
+    tool = vimdiff
+
+[merge]
+    conflictstyle = zdiff3
+    tool = vimdiff
+    ff = false
+
+[mergetool]
+    prompt = false
+    keepBackup = false
+
+# -----------------------------------------------------------------------------
+# Rebase
+# -----------------------------------------------------------------------------
+[rebase]
+    autoSquash = true
+    autoStash = true
+    updateRefs = true
+    missingCommitsCheck = error
+    abbreviateCommands = true
+
+# -----------------------------------------------------------------------------
+# Pull & Push
+# -----------------------------------------------------------------------------
+[pull]
+    rebase = true
+    ff = only
+
+[push]
+    default = current
+    autoSetupRemote = true
+    followTags = true
+
+# -----------------------------------------------------------------------------
+# Fetch & Remote
+# -----------------------------------------------------------------------------
+[fetch]
+    prune = true
+    pruneTags = true
+    all = true
+    parallel = 0
+
+[remote "origin"]
+    prune = true
+
+# -----------------------------------------------------------------------------
+# Branch & Status
+# -----------------------------------------------------------------------------
+[branch]
+    sort = -committerdate
+    autoSetupMerge = always
+
+[status]
+    submoduleSummary = true
+    showUntrackedFiles = all
+    showStash = true
+
+[column]
+    ui = auto
+
+# -----------------------------------------------------------------------------
+# Log & Format
+# -----------------------------------------------------------------------------
+[log]
+    date = iso
+    abbrevCommit = true
+    follow = true
+
+[format]
+    pretty = format:%C(auto)%h %C(blue)%ad %C(green)%an%C(auto)%d %s
+
+[blame]
+    date = short
+    coloring = highlightRecent
+    # Arquivo para ignorar commits de formatação em massa
+    # ignoreRevsFile = .git-blame-ignore-revs
+
+# -----------------------------------------------------------------------------
+# Transfer & Safety
+# -----------------------------------------------------------------------------
+[transfer]
+    fsckobjects = true
+
+[receive]
+    fsckObjects = true
+
+[pack]
+    threads = 0
+
+# -----------------------------------------------------------------------------
+# Rerere (Reuse Recorded Resolution)
+# -----------------------------------------------------------------------------
+[rerere]
+    enabled = true
+    autoUpdate = true
+
+# -----------------------------------------------------------------------------
+# Submodule
+# -----------------------------------------------------------------------------
+[submodule]
+    recurse = true
+    fetchJobs = 0
+
+# -----------------------------------------------------------------------------
+# Color Customization
+# -----------------------------------------------------------------------------
+[color]
+    ui = auto
+    branch = auto
+    diff = auto
+    status = auto
+
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+    commit = yellow bold
+    whitespace = red reverse
+
+[color "status"]
+    added = green
+    changed = yellow
+    untracked = cyan
+
+# -----------------------------------------------------------------------------
+# URL Shortcuts
+# -----------------------------------------------------------------------------
+[url "git@github.com:"]
+    insteadOf = gh:
+    pushInsteadOf = https://github.com/
+
+[url "git@gitlab.com:"]
+    insteadOf = gl:
+    pushInsteadOf = https://gitlab.com/
+
+[url "git@bitbucket.org:"]
+    insteadOf = bb:
+    pushInsteadOf = https://bitbucket.org/
+
+[url "git@codeberg.org:"]
+    insteadOf = cb:
+    pushInsteadOf = https://codeberg.org/
+
+
+# -----------------------------------------------------------------------------
+# Aliases - Básicos
+# -----------------------------------------------------------------------------
+[alias]
+    # Status & Info
+    st = status -sb
+    ss = status
+    
+    # Branches
+    co = checkout
+    sw = switch
+    br = branch -vv
+    bra = branch -avv
+    brd = branch -d
+    brD = branch -D
+    
+    # Commits
+    ci = commit
+    cm = commit -m
+    ca = commit --amend
+    cane = commit --amend --no-edit
+    wip = commit -am "WIP"
+    
+    # Staging
+    a = add
+    aa = add --all
+    ap = add -p
+    unstage = restore --staged
+    discard = restore
+    
+    # Diff
+    df = diff
+    dfs = diff --staged
+    dfc = diff --cached
+    dfw = diff --word-diff
+    
+    # Log
+    last = log -1 --stat
+    lg = log --graph --decorate --oneline -20
+    lga = log --graph --decorate --oneline --all
+    ll = log --pretty=format:'%C(yellow)%h%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' -20
+    lla = log --pretty=format:'%C(yellow)%h%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --all
+    hist = log --graph --date=short --pretty=format:'%C(auto)%h %C(blue)%ad %C(green)%an%C(auto)%d %s'
+    today = log --since='00:00:00' --all --oneline --no-merges
+    week = log --since='1 week ago' --all --oneline --no-merges
+    
+    # Rebase
+    rb = rebase
+    rbi = rebase -i
+    rbc = rebase --continue
+    rba = rebase --abort
+    rbs = rebase --skip
+    rom = rebase origin/main
+    
+    # Push/Pull
+    pf = push --force-with-lease
+    pu = push -u origin HEAD
+    pl = pull --rebase
+    
+    # Fetch
+    f = fetch --all --prune
+    
+    # Stash
+    stl = stash list
+    stp = stash pop
+    sta = stash apply
+    std = stash drop
+    sts = stash show -p
+    stash-all = stash save --include-untracked
+    
+    # Remote
+    rv = remote -v
+    
+    # Tags
+    tags = tag -l --sort=-version:refname
+    
+    # Cleanup
+    prune-local = "!git branch --merged | grep -v '\\*\\|main\\|master\\|develop' | xargs -n 1 git branch -d"
+    prune-remote = fetch --prune
+    cleanup = "!git prune-local && git prune-remote"
+    
+    # Utils
+    root = rev-parse --show-toplevel
+    aliases = config --get-regexp alias
+    whoami = !git config user.name && git config user.email
+    contributors = shortlog -sn --no-merges
+    
+    # Fixup workflow
+    fixup = commit --fixup
+    squash = commit --squash
+    
+    # Undo
+    undo = reset --soft HEAD~1
+    uncommit = reset --soft HEAD~1
+    unstash = stash pop
+    
+    # Cherry-pick
+    cp = cherry-pick
+    cpc = cherry-pick --continue
+    cpa = cherry-pick --abort
+    
+    # Bisect
+    bis = bisect start
+    big = bisect good
+    bib = bisect bad
+    bir = bisect reset
+    
+    # Worktree
+    wt = worktree
+    wtl = worktree list
+    wta = worktree add
+    wtr = worktree remove
+    
+    # Find
+    find = "!git ls-files | grep -i"
+    grep-all = "!git rev-list --all | xargs git grep"
+    
+    # Show changed files between branches
+    changed = diff --name-status
+    stat = diff --stat
+    
+    # Count commits
+    count = rev-list --count HEAD
+    
+    # Recent branches
+    recent = for-each-ref --sort=-committerdate --count=10 --format='%(refname:short)' refs/heads/
+    
+    # Show branch authors
+    branch-authors = for-each-ref --format='%(committerdate:short) %(authorname) %(refname:short)' --sort=-committerdate refs/heads/
+    
+    # Conflicted files
+    conflicts = diff --name-only --diff-filter=U
+    
+    # Assume unchanged (útil para configs locais)
+    assume = update-index --assume-unchanged
+    unassume = update-index --no-assume-unchanged
+    assumed = "!git ls-files -v | grep ^h | cut -c 3-"
+    
+    # Edit global config
+    ec = config --global -e
+    
+    # Sync fork with upstream
+    sync = "!git fetch upstream && git merge upstream/main"
+    
+    # Pull all repos
+    pall = "!f(){ cd \"$HOME/GIT\" || exit 1; for d in */.git; do (cd \"${d%/.git}\" && echo \"=== ${d%/.git} ===\" && git pull --ff-only); done; }; f"
+    
+    # File history
+    file-history = log --follow -p --
+    
+    # Show what I did today
+    standup = "!git log --since='yesterday' --author=\"$(git config user.name)\" --oneline"
+    
+    # Interactive fixup
+    fixup-menu = "!git log --oneline -20 | fzf | cut -d' ' -f1 | xargs -I{} git commit --fixup={}"
+    
+    # Reset hard to remote
+    reset-hard = "!git fetch origin && git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)"
+    
+    # Create branch and switch
+    cob = checkout -b
+    swc = switch -c
+
+# -----------------------------------------------------------------------------
+# Include - Configurações específicas por diretório
+# -----------------------------------------------------------------------------
+# Exemplo: configs diferentes para repos de trabalho
+# [includeIf "gitdir:~/work/"]
+#     path = ~/.gitconfig-work
+
+# Exemplo: configs diferentes para repos pessoais
+# [includeIf "gitdir:~/personal/"]
+#     path = ~/.gitconfig-personal
