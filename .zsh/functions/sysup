@@ -1,0 +1,40 @@
+# Description: Dynamic package manager detection and global system update
+# Usage: sysup
+
+_sysup_log() {
+  print -P "%F{blue}==>%f %B$1%b"
+}
+
+# 1. Universal Package Managers (Sandboxed)
+if command -v flatpak &>/dev/null; then
+  _sysup_log "Updating Flatpaks..."
+  flatpak update -y
+fi
+
+if command -v snap &>/dev/null; then
+  _sysup_log "Refreshing Snaps..."
+  sudo snap refresh
+fi
+
+# 2. Native System Package Managers
+if command -v dnf &>/dev/null; then
+  _sysup_log "Running DNF Update..."
+  sudo dnf update -y
+elif command -v yay &>/dev/null; then
+  _sysup_log "Running Yay (AUR/Pacman)..."
+  yay -Syu --noconfirm
+elif command -v pacman &>/dev/null; then
+  _sysup_log "Running Pacman..."
+  sudo pacman -Syu --noconfirm
+elif command -v apt &>/dev/null; then
+  _sysup_log "Running APT..."
+  sudo apt update && sudo apt upgrade -y
+elif command -v yum &>/dev/null; then
+  _sysup_log "Running YUM..."
+  sudo yum update -y
+elif command -v zypper &>/dev/null; then
+  _sysup_log "Running Zypper..."
+  sudo zypper patch
+fi
+
+_sysup_log "System update completed."
