@@ -1,0 +1,44 @@
+# Description: Sign commit and push to all configured remotes dynamically
+# Usage: gpx "commit message"
+
+gpx() {
+  local msg=$1
+  
+  # 1. Validation
+  if [[ -z $msg ]]; then
+    print -P "%F{red}error:%f commit message required."
+    return 1
+  fi
+
+  if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+    print -P "%F{red}error:%f not a git repository."
+    return 1
+  fi
+
+  # 2. Commit logic
+  if git diff-index --quiet HEAD --; then
+    print -P "%F{yellow}notice:%f no changes to commit. Checking remotes..."
+  else
+    git add .
+    git commit -S -m "$msg" || {
+      print -P "%F{red}error:%f commit failed (check GPG/keys)."
+      return 1
+    }
+  fi
+
+  # 3. Dynamic Push
+  local br=$(git branch --show-current)
+  local remotes=(${(f)"$(git remote)"})
+
+  if [[ ${#remotes} -eq 0 ]]; then
+    print -P "%F{yellow}warning:%f no remotes configured."
+    return 1
+  fi
+
+  for r in $remotes; do
+    print -P "%F{blue}==>%f Pushing branch %B$br%b to %B$r%b..."
+    git push "$r" "$br"
+  done
+}
+
+gpx "$@"
