@@ -5,6 +5,7 @@ autoload -Uz ~/.zsh/functions/*(N:t)
 # sistema de completions
 fpath=(~/.zsh/completions $fpath)
 autoload -Uz compinit && compinit
+autoload -Uz promptinit && promptinit
 
 
 
