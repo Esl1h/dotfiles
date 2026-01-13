@@ -1,0 +1,82 @@
+# ~/.zsh/functions/dotfile-functions
+
+update-functions() {
+    setopt local_options pipe_fail
+
+    local GITHUB_RAW="https://raw.githubusercontent.com/Esl1h/dotfiles/main/.zsh/functions"
+    local GITLAB_RAW="https://gitlab.com/Esl1h/dotfiles/-/raw/main/.zsh/functions"
+    local ZSH_DIR="${HOME}/.zsh/functions"
+    local TEMP_DIR=$(mktemp -d)
+    local repo_url="" repo_name=""
+    local -i updated=0 downloaded=0 skipped=0 failed=0
+
+    trap "rm -rf $TEMP_DIR" EXIT INT TERM
+
+    echo "→ Discovering files in repository..."
+
+    # List via GitHub API
+    local files=$(curl -sL "https://api.github.com/repos/Esl1h/dotfiles/contents/.zsh/functions" | \
+        grep -oP '"name":\s*"\K[^"]+' | grep -vE '^(README|\.)')
+
+    if [[ -z "$files" ]]; then
+        echo "✗ Error: could not list files"
+        return 1
+    fi
+
+    local file_count=$(echo "$files" | wc -l)
+    echo "→ Found: $file_count files"
+
+    # Test connectivity
+    local first_file=$(echo "$files" | head -1)
+    if curl -sf --max-time 5 "${GITHUB_RAW}/${first_file}" -o /dev/null 2>/dev/null; then
+        repo_url="$GITHUB_RAW"
+        repo_name="GitHub"
+    elif curl -sf --max-time 5 "${GITLAB_RAW}/${first_file}" -o /dev/null 2>/dev/null; then
+        repo_url="$GITLAB_RAW"
+        repo_name="GitLab"
+    else
+        echo "✗ Error: repositories unreachable"
+        return 1
+    fi
+
+    echo "→ Using: $repo_name\n"
+
+    # Process each file
+    for file in ${(f)files}; do
+        [[ -z "$file" ]] && continue
+
+        local remote="${repo_url}/${file}"
+        local local_path="${ZSH_DIR}/${file}"
+        local temp_path="${TEMP_DIR}/${file}"
+
+        printf "  %-30s " "${file}"
+
+        if curl -sfL --max-time 10 "$remote" -o "$temp_path" 2>/dev/null; then
+            if [[ -f "$local_path" ]]; then
+                if cmp -s "$local_path" "$temp_path"; then
+                    echo "✓"
+                    ((skipped++))
+                else
+                    cp "$temp_path" "$local_path"
+                    chmod +x "$local_path"
+                    echo "↻"
+                    ((updated++))
+                fi
+            else
+                cp "$temp_path" "$local_path"
+                chmod +x "$local_path"
+                echo "+"
+                ((downloaded++))
+            fi
+        else
+            echo "✗"
+            ((failed++))
+        fi
+    done
+
+    echo "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    printf "New: %d | Updated: %d | Unchanged: %d | Failed: %d\n" \
+        $downloaded $updated $skipped $failed
+
+    (( downloaded + updated > 0 )) && echo "\n⚠ Reload shell: exec zsh"
+}
