@@ -1,0 +1,259 @@
+###########################
+# dnscrypt-proxy.toml     #
+# Configuração hardened   #
+###########################
+
+#── Global ────────────────────────────────────────────────────
+
+# Servidor upstream explícito (NextDNS com config ID)
+server_names = ['NextDNS-ID-xxx']
+
+# Escuta apenas em loopback (IPv4 + IPv6)
+listen_addresses = ['127.0.0.1:53', '[::1]:53']
+
+# Limite de conexões simultâneas de clientes
+max_clients = 250
+
+#── Seleção de servidores ─────────────────────────────────────
+
+# Aceitar resolvers acessíveis via IPv4
+ipv4_servers = true
+
+# Desabilitar IPv6 (sem conectividade IPv6 disponível)
+ipv6_servers = false
+
+# Permitir protocolo DNSCrypt
+dnscrypt_servers = true
+
+# Permitir protocolo DNS-over-HTTPS
+doh_servers = true
+
+# Desabilitar Oblivious DoH (experimental, overhead desnecessário com NextDNS)
+odoh_servers = false
+
+# Exigir DNSSEC — rejeita resolvers sem validação
+require_dnssec = true
+
+# Exigir política declarada de não-logging
+require_nolog = true
+
+# Permitir resolvers com blocklist própria (NextDNS faz filtering)
+require_nofilter = false
+
+# Nenhum servidor explicitamente bloqueado
+disabled_server_names = []
+
+#── Conexão ───────────────────────────────────────────────────
+
+# Não forçar TCP; DNSCrypt já cifra sobre UDP
+force_tcp = false
+
+# HTTP/3 desabilitado (experimental; habilitar se o servidor suportar Alt-Svc)
+http3 = false
+
+# Não fazer probe HTTP/3 — evita latência extra em servidores sem suporte
+http3_probe = false
+
+# Timeout de queries em ms (5s é o mínimo recomendado)
+timeout = 5000
+
+# Keepalive para conexões HTTPS/H2/H3 em segundos
+keepalive = 30
+
+#── Privacidade e criptografia ────────────────────────────────
+
+# Gerar chave efêmera por query DNSCrypt — impede correlação temporal
+dnscrypt_ephemeral_keys = true
+
+# Desabilitar TLS session tickets — impede rastreamento entre sessões DoH
+tls_disable_session_tickets = true
+
+#── Logging ───────────────────────────────────────────────────
+
+# Nível de log (2 = padrão; 0 = verbose, 6 = apenas fatal)
+log_level = 2
+
+# Tamanho máximo de arquivos de log em MB
+log_files_max_size = 10
+
+# Retenção de backups de log em dias
+log_files_max_age = 7
+
+# Número máximo de backups mantidos
+log_files_max_backups = 1
+
+#── Certificados ──────────────────────────────────────────────
+
+# Intervalo de refresh de certificados em minutos
+cert_refresh_delay = 240
+
+#── Filtros ───────────────────────────────────────────────────
+
+# Não bloquear AAAA automaticamente (block_ipv6 é filtro local agressivo)
+block_ipv6 = false
+
+# Bloquear queries de hostnames sem domínio (dotless names)
+block_unqualified = true
+
+# Bloquear queries para zonas não-delegadas (evita vazamento upstream)
+block_undelegated = true
+
+# TTL em segundos para respostas sintéticas de bloqueio
+reject_ttl = 10
+
+#── Cache DNS ─────────────────────────────────────────────────
+
+# Habilitar cache local para reduzir latência e tráfego
+cache = true
+
+# Número de entradas no cache
+cache_size = 4096
+
+# TTL mínimo forçado para entradas cacheadas (40 min — reduz queries repetidas)
+cache_min_ttl = 2400
+
+# TTL máximo para entradas cacheadas (24h)
+cache_max_ttl = 86400
+
+# TTL mínimo para respostas negativas (NXDOMAIN)
+cache_neg_min_ttl = 60
+
+# TTL máximo para respostas negativas
+cache_neg_max_ttl = 600
+
+#── Bootstrap e rede ──────────────────────────────────────────
+
+# Resolvers bootstrap (usados apenas para obter IPs iniciais dos DoH servers)
+bootstrap_resolvers = ['9.9.9.11:53', '8.8.8.8:53']
+
+# Ignorar DNS do sistema — evita vazamento por resolvers não-cifrados
+ignore_system_dns = true
+
+# Tempo máximo (s) de espera por conectividade no boot
+netprobe_timeout = 60
+
+# Endereço para verificação de conectividade de rede
+netprobe_address = '9.9.9.9:53'
+
+#── Load balancing ────────────────────────────────────────────
+
+# Estratégia wp2: escolhe o melhor entre 2 candidatos aleatórios (RTT + taxa de sucesso)
+lb_strategy = 'wp2'
+
+# Estimar latência continuamente para ajustar balanceamento
+lb_estimator = true
+
+#── Resposta para queries bloqueadas ─────────────────────────
+
+# Responder REFUSED para queries bloqueadas (mais correto que HINFO/mentir)
+blocked_query_response = 'refused'
+
+#── Captive portals ───────────────────────────────────────────
+
+[captive_portals]
+
+#── Local DoH ─────────────────────────────────────────────────
+
+[local_doh]
+
+#── Query logging (desabilitado — reduz superfície de dados em disco) ──
+
+[query_log]
+format = 'tsv'
+
+#── NX logging (desabilitado) ─────────────────────────────────
+
+[nx_log]
+format = 'tsv'
+
+#── Blocklists ────────────────────────────────────────────────
+
+[blocked_names]
+
+[blocked_ips]
+
+[allowed_names]
+
+[allowed_ips]
+
+#── Schedules ─────────────────────────────────────────────────
+
+[schedules]
+
+#── Sources ───────────────────────────────────────────────────
+
+[sources]
+
+  # Lista pública de resolvers DNSCrypt/DoH
+  [sources.public-resolvers]
+  urls = [
+    'https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md',
+    'https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md',
+  ]
+  cache_file = '/var/cache/dnscrypt-proxy/public-resolvers.md'
+  minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+  refresh_delay = 73
+  prefix = ''
+
+  # Relays para DNS anonimizado
+  [sources.relays]
+  urls = [
+    'https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/relays.md',
+    'https://download.dnscrypt.info/resolvers-list/v3/relays.md',
+  ]
+  cache_file = '/var/cache/dnscrypt-proxy/relays.md'
+  minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+  refresh_delay = 73
+  prefix = ''
+
+#── Workarounds para servidores bugados ───────────────────────
+
+[broken_implementations]
+fragments_blocked = [
+  'cisco',
+  'cisco-ipv6',
+  'cisco-familyshield',
+  'cisco-familyshield-ipv6',
+  'cisco-sandbox',
+  'cleanbrowsing-adult',
+  'cleanbrowsing-adult-ipv6',
+  'cleanbrowsing-family',
+  'cleanbrowsing-family-ipv6',
+  'cleanbrowsing-security',
+  'cleanbrowsing-security-ipv6',
+]
+
+#── Autenticação X.509 para DoH (não utilizado) ───────────────
+
+[doh_client_x509_auth]
+
+#── DNS anonimizado ───────────────────────────────────────────
+
+[anonymized_dns]
+
+# Pular resolvers incompatíveis com anonimização em vez de usá-los direto
+skip_incompatible = true
+
+# Fallback direto para certificados se relay falhar (desabilitado — preserva anonimato)
+direct_cert_fallback = false
+
+#── DNS64 (desabilitado — sem necessidade em dual-stack/IPv4-only) ──
+
+[dns64]
+
+#── IP Encryption (desabilitado — sem uso de plugins com logs de IP) ──
+
+[ip_encryption]
+algorithm = "none"
+key = ""
+
+#── Monitoring UI (desabilitado — expõe superfície de ataque local) ──
+
+[monitoring_ui]
+enabled = false
+
+#── Entrada estática do NextDNS ───────────────────────────────
+
+[static]
+  [static.'NextDNS-ID-xxxx']
+  stamp = 'sdns://xxxxxxxxxxx'
