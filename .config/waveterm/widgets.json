@@ -68,7 +68,7 @@
       "meta": {
         "view": "term",
         "controller": "shell",
-        "cmd:initscript.sh": "[[ -r ~/.cache/wave-last-cwd ]] && cd -- \"$(<~/.cache/wave-last-cwd)\" 2>/dev/null; $HOME/.opencode/bin/opencode"
+        "cmd:initscript.sh": "[[ -r ~/.cache/wave-last-cwd ]] && cd -- \"$(<~/.cache/wave-last-cwd)\" 2>/dev/null; $HOME/.opencode/bin/opencode; wsh badge check --color '#58c142' --priority 10"
       }
     }
   },
@@ -83,7 +83,7 @@
       "meta": {
         "view": "term",
         "controller": "shell",
-        "cmd:initscript.sh": "[[ -r ~/.cache/wave-last-cwd ]] && cd -- \"$(<~/.cache/wave-last-cwd)\" 2>/dev/null; $HOME/.abacusai/bin/abacusai"
+        "cmd:initscript.sh": "[[ -r ~/.cache/wave-last-cwd ]] && cd -- \"$(<~/.cache/wave-last-cwd)\" 2>/dev/null; $HOME/.abacusai/bin/abacusai; wsh badge check --color '#58c142' --priority 10"
       }
     }
   },
