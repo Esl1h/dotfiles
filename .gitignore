@@ -120,3 +120,6 @@ id_rsa.pub
 id_ed25519
 id_ed25519.pub
 *.pem
+
+# Wave Terminal secrets store (encrypted, mas ligado ao keyring desta máquina - inútil e desnecessário em repo público)
+.config/waveterm/secrets.enc

@@ -1,0 +1,168 @@
+{
+  "defwidget@terminal": {
+    "display:order": -5,
+    "icon": "terminal",
+    "label": "zsh",
+    "blockdef": {
+      "meta": {
+        "view": "term",
+        "controller": "shell",
+        "term:localshellpath": "/usr/bin/zsh"
+      }
+    }
+  },
+  "defwidget@files": {
+    "display:order": -4,
+    "icon": "folder",
+    "label": "files",
+    "blockdef": {
+      "meta": {
+        "view": "preview",
+        "file": "~"
+      }
+    }
+  },
+  "defwidget@web": {
+    "display:order": -3,
+    "icon": "globe",
+    "label": "web",
+    "blockdef": {
+      "meta": {
+        "view": "web"
+      }
+    }
+  },
+  "defwidget@sysinfo": {
+    "display:order": -1,
+    "icon": "chart-line",
+    "label": "sysinfo",
+    "blockdef": {
+      "meta": {
+        "view": "sysinfo"
+      }
+    }
+  },
+  "claude": {
+    "display:order": 1,
+    "icon": "robot",
+    "color": "#d97757",
+    "label": "claude",
+    "description": "Claude Code na sessão (bash de fallback ao sair)",
+    "magnified": true,
+    "blockdef": {
+      "meta": {
+        "view": "term",
+        "controller": "shell",
+        "cmd:initscript.sh": "[[ -r ~/.cache/wave-last-cwd ]] && cd -- \"$(<~/.cache/wave-last-cwd)\" 2>/dev/null; $HOME/.local/bin/claude"
+      }
+    }
+  },
+  "opencode": {
+    "display:order": 2,
+    "icon": "laptop-code",
+    "color": "#10b981",
+    "label": "opencode",
+    "description": "OpenCode na sessão (bash de fallback ao sair)",
+    "magnified": true,
+    "blockdef": {
+      "meta": {
+        "view": "term",
+        "controller": "shell",
+        "cmd:initscript.sh": "[[ -r ~/.cache/wave-last-cwd ]] && cd -- \"$(<~/.cache/wave-last-cwd)\" 2>/dev/null; $HOME/.opencode/bin/opencode"
+      }
+    }
+  },
+  "abacusai": {
+    "display:order": 3,
+    "icon": "calculator",
+    "color": "#7c3aed",
+    "label": "abacusai",
+    "description": "Abacus.AI CLI na sessão (bash de fallback ao sair)",
+    "magnified": true,
+    "blockdef": {
+      "meta": {
+        "view": "term",
+        "controller": "shell",
+        "cmd:initscript.sh": "[[ -r ~/.cache/wave-last-cwd ]] && cd -- \"$(<~/.cache/wave-last-cwd)\" 2>/dev/null; $HOME/.abacusai/bin/abacusai"
+      }
+    }
+  },
+  "btop": {
+    "display:order": 4,
+    "icon": "microchip",
+    "label": "btop",
+    "magnified": true,
+    "blockdef": {
+      "meta": {
+        "view": "term",
+        "controller": "cmd",
+        "cmd": "btop"
+      }
+    }
+  },
+  "k9s": {
+    "display:order": 5,
+    "icon": "dharmachakra",
+    "color": "#326CE5",
+    "label": "k9s",
+    "description": "TUI de clusters Kubernetes",
+    "magnified": true,
+    "blockdef": {
+      "meta": {
+        "view": "term",
+        "controller": "cmd",
+        "cmd": "k9s"
+      }
+    }
+  },
+  "lazygit": {
+    "display:order": 6,
+    "icon": "code-branch",
+    "color": "#F1502F",
+    "label": "lazygit",
+    "magnified": true,
+    "blockdef": {
+      "meta": {
+        "view": "term",
+        "controller": "cmd",
+        "cmd": "lazygit"
+      }
+    }
+  },
+  "docker": {
+    "display:order": 7,
+    "icon": "brands@docker",
+    "color": "#2496ED",
+    "label": "docker",
+    "description": "docker stats (uso de containers em execução)",
+    "magnified": true,
+    "blockdef": {
+      "meta": {
+        "view": "term",
+        "controller": "cmd",
+        "cmd": "docker stats"
+      }
+    }
+  },
+  "all-cpu": {
+    "icon": "chart-scatter",
+    "label": "all-cpu",
+    "blockdef": {
+      "meta": {
+        "view": "sysinfo",
+        "sysinfo:type": "All CPU"
+      }
+    }
+  },
+  "3min-info": {
+    "icon": "chart-simple",
+    "label": "sys",
+    "blockdef": {
+      "meta": {
+        "view": "sysinfo",
+        "graph:numpoints": 180,
+        "sysinfo:type": "CPU + Mem"
+      }
+    }
+  }
+}

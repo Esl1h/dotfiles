@@ -1,0 +1,20 @@
+{
+  "gemini-flash": {
+    "display:name": "Gemini 3.5 Flash",
+    "display:order": 1,
+    "display:icon": "bolt",
+    "display:description": "Rápido e barato — padrão pro dia a dia (cota free tier folgada)",
+    "ai:provider": "google",
+    "ai:model": "gemini-3.5-flash",
+    "ai:thinkinglevel": "medium"
+  },
+  "gemini-flash-deep": {
+    "display:name": "Gemini 3.5 Flash (deep)",
+    "display:order": 2,
+    "display:icon": "sparkles",
+    "display:description": "Mesmo modelo, thinking level alto — Pro está com cota 0 nessa chave free tier",
+    "ai:provider": "google",
+    "ai:model": "gemini-3.5-flash",
+    "ai:thinkinglevel": "high"
+  }
+}

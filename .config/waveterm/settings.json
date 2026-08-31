@@ -1,0 +1,10 @@
+{
+  "app:defaultnewblock": "term",
+  "app:showoverlayblocknums": true,
+  "autoupdate:channel": "latest",
+  "autoupdate:enabled": true,
+  "telemetry:enabled": true,
+  "term:fontsize": 13,
+  "term:theme": "default-dark",
+  "waveai:defaultmode": "gemini-flash"
+}
