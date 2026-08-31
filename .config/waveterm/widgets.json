@@ -121,11 +121,12 @@
     "color": "#F1502F",
     "label": "lazygit",
     "magnified": true,
+    "description": "lazygit no diretório atual (bash de fallback ao sair)",
     "blockdef": {
       "meta": {
         "view": "term",
-        "controller": "cmd",
-        "cmd": "lazygit"
+        "controller": "shell",
+        "cmd:initscript.sh": "[[ -r ~/.cache/wave-last-cwd ]] && cd -- \"$(<~/.cache/wave-last-cwd)\" 2>/dev/null; /home/esli/go/bin/lazygit"
       }
     }
   },
@@ -140,7 +141,8 @@
       "meta": {
         "view": "term",
         "controller": "cmd",
-        "cmd": "docker stats"
+        "cmd": "docker stats",
+        "cmd:shell": true
       }
     }
   },
